@@ -14,16 +14,17 @@
                 <input type="text" id="title" name="title" value="<%= course.title %>"required>
                 <label for="desc">Course description:</label>
                 <textarea id="desc" name="desc" required><%= course.desc %></textarea>
-                <button id="edit" data-doc="<%= course._id %>">Submit</button>
+            </form>
+                <button id="edit" data-doc="<%= course._id %>">Edit</button>
                 
                 <!--<button>Submit</button>-->
-            </form>
+            
         </div>
 
         <%- include('./partials/footer.ejs') %>
 
         <script>
-            
+
             const trashcan = document.querySelector('#edit');
 
             trashcan.addEventListener('click', (e) => {
@@ -34,7 +35,10 @@
                 fetch(endpoint, {
                     method: 'DELETE'
                 })
-                .then((response) => response.json())
+                .then((response) => {
+                    response = response.json()
+                    document.getElementById("myform").submit();
+                })
                 .then((data) => window.location.href = data.redirect)
                 .catch(err => console.log(err));
                 //document.getElementById("myform").submit();
