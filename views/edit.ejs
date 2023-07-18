@@ -1,0 +1,45 @@
+<html lang="en">
+
+    <%- include('./partials/head.ejs') %>
+
+    <body>
+
+        <%- include('./partials/nav.ejs') %>
+
+        <div class="create-course content">
+            <form id="myform" action="/courses" method="POST">
+                <label for="code">Course code:</label>
+                <input type="text" id="code" name="code" value="<%= course.code %>"required>
+                <label for="title">Course title:</label>
+                <input type="text" id="title" name="title" value="<%= course.title %>"required>
+                <label for="desc">Course description:</label>
+                <textarea id="desc" name="desc" required><%= course.desc %></textarea>
+                <button id="edit" data-doc="<%= course._id %>">Submit</button>
+                
+                <!--<button>Submit</button>-->
+            </form>
+        </div>
+
+        <%- include('./partials/footer.ejs') %>
+
+        <script>
+            
+            const trashcan = document.querySelector('#edit');
+
+            trashcan.addEventListener('click', (e) => {
+                
+                console.log("click");
+                const endpoint = `/courses/${trashcan.dataset.doc}`;
+
+                fetch(endpoint, {
+                    method: 'DELETE'
+                })
+                .then((response) => response.json())
+                .then((data) => window.location.href = data.redirect)
+                .catch(err => console.log(err));
+                //document.getElementById("myform").submit();
+            })
+        </script>
+
+    </body>
+</html>

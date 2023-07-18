@@ -12,7 +12,8 @@
             <div class="content">
                 <p><%= course.desc %></p>
             </div>
-            <a class="delete" data-doc="<%= course._id %>">delete</a>
+            <a class="delete" data-doc="<%= course._id %>">Delete</a>
+            <a class="edit" href="/edit/<%= course._id %>">Edit</a>
         </div>
 
         <%- include('./partials/footer.ejs') %>

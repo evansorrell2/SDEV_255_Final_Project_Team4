@@ -23,13 +23,15 @@ app.use(morgan('dev'));
 // routes
 // index
 app.get('/', (req, res) => {
-    res.render('index', { title: 'Home'});
+    res.redirect('/courses');
+    //res.render('index', { title: 'Home'});   
 });
 
 // login
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Login' });
 });
+
 
 // course routes
 // courses
@@ -84,6 +86,21 @@ app.delete('/courses/:id', (req, res) => {
             console.log(err);
         })
 })
+// Edit course
+app.get('/edit/:id', (req, res) => {
+    const id = req.params.id;
+    Course.findById(id)
+        .then(result => {
+            res.render('edit', { course: result, title: 'Edit Course'});
+        })
+        .catch(err => {
+            console.log(err);
+        });
+});
+// app.put('/edit/:id', (req, res) => {
+//     res.send()
+
+// }
 
 // 404
 app.use((req, res) => {
