@@ -97,6 +97,26 @@ app.get('/edit/:id', (req, res) => {
             console.log(err);
         });
 });
+app.post('/edit/:id', (req, res) => {
+    const course = new Course(req.body);
+    const id = req.params.id;
+
+    course.save()
+        .then((result) => {
+            Course.findByIdAndDelete(id)
+            .then(result => {
+                res.redirect('/courses');
+            })
+            .catch(err => {
+            console.log(err);
+            })
+
+        })
+        .catch((err) => {
+            console.log(err);
+        })
+})
+
 // app.put('/edit/:id', (req, res) => {
 //     res.send()
 
