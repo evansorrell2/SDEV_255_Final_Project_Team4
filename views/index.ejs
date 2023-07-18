@@ -1,25 +1,19 @@
 <html lang="en">
-<%- include("./partials/head.ejs") %>
-
-<body class = "page">
-  <%- include("./partials/nav.ejs") %>
-
-  <div class="blogs content">
-    <h2>All Courses</h2>
-
-    <% if (classes.length > 0) { %>
-      <% classes.forEach(blog => { %>
-
-        <h3 class="title"><%= blog.title %></h3>
-        <p class="snippet"><%= blog.snippet %></p>
-
-      <% }) %>
-    <% } else { %>
-      <p>There are no classes to display...</p>
-    <% } %>
     
-  </div>
+    <%- include('./partials/head.ejs') %>
 
-  <%- include("./partials/footer.ejs") %>
-</body>
+    <body>
+
+        <%- include('./partials/nav.ejs') %>
+
+        <div class="about content">
+            <h2>Home Placeholder</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+
+        <%- include('./partials/footer.ejs') %>
+
+    </body>
 </html>
