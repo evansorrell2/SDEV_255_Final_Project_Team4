@@ -8,7 +8,7 @@ const handleErrors = (err) => {
 
   // incorrect email
   if (err.message === 'incorrect username') {
-    errors.email = 'That email is not registered';
+    errors.email = 'That username is not registered';
   }
 
   // incorrect password
@@ -18,7 +18,7 @@ const handleErrors = (err) => {
 
   // duplicate email error
   if (err.code === 11000) {
-    errors.email = 'that email is already registered';
+    errors.email = 'that username is already registered';
     return errors;
   }
 
@@ -53,10 +53,10 @@ module.exports.login_get = (req, res) => {
 }
 
 module.exports.signup_post = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     try {
-        const user = await User.create({ email, password });
+        const user = await User.create({ email, password, role });
         const token = createToken(user._id);
         res.cookie('jwt', token, { httpOnly: true});
         res.status(201).json({ user: user._id });

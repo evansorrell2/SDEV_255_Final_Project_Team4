@@ -58,7 +58,7 @@ app.get('/courses', (req, res) => {
 });
 
 // post handler
-app.post('/courses', (req, res) => {
+app.post('/courses',requireAuth, (req, res) => {
     const course = new Course(req.body);
 
     course.save()
@@ -87,7 +87,7 @@ app.get('/courses/:id', (req, res) => {
 })
 
 // delete course
-app.delete('/courses/:id', (req, res) => {
+app.delete('/courses/:id',requireAuth, (req, res) => {
     const id = req.params.id;
 
     Course.findByIdAndDelete(id)
@@ -99,7 +99,7 @@ app.delete('/courses/:id', (req, res) => {
         })
 })
 // Edit course
-app.get('/edit/:id', (req, res) => {
+app.get('/edit/:id',requireAuth, (req, res) => {
     const id = req.params.id;
     Course.findById(id)
         .then(result => {
@@ -109,7 +109,7 @@ app.get('/edit/:id', (req, res) => {
             console.log(err);
         });
 });
-app.post('/edit/:id', (req, res) => {
+app.post('/edit/:id',requireAuth, (req, res) => {
     const course = new Course(req.body);
     const id = req.params.id;
 

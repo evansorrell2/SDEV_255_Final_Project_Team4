@@ -12,6 +12,8 @@
             <label for="password">Password</label>
             <input type="password" name="password" />
             <div class="password error"></div>
+            <label for="role">Are you a teacher?</label>
+            <input type="checkbox" name ="role" value = "teacher">
             <button>Sign up</button>
           </form>
           
@@ -33,13 +35,22 @@
     passwordError.textContent = '';
 
     // get values
+
+    checkboxValue = "student";
+    if(form.role.checked)
+        checkboxValue = "teacher";
+
+    console.log('ValueCheck: ' + checkboxValue);
     const email = form.email.value;
     const password = form.password.value;
+    const role = checkboxValue;
+
+    
 
     try {
         const res = await fetch('/signup', { 
         method: 'POST', 
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password,role }),
         headers: {'Content-Type': 'application/json'}
         });
         const data = await res.json();

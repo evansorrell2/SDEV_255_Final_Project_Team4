@@ -12,7 +12,11 @@
             <div class="content">
                 <p><%= course.desc %></p>
             </div>
-            <a class="delete" data-doc="<%= course._id %>">Delete</a>
+            <% if (user) { 
+                if (user.role == 'teacher') { %>
+                <a class="delete" data-doc="<%= course._id %>">Delete</a>
+            <% }}%>
+            
             <a class="edit" href="/edit/<%= course._id %>">Edit</a>
         </div>
 
