@@ -4,8 +4,17 @@
         <p>Final Project</p>
     </div>
     <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/login">Login</a></li>
+        
+        <% if (user) { %>
+            <li>Welcome, <%= user.email %></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/logout">Log out</a></li>
+          <% } else { %>
+            <li><a href="/">Home</a></li>
+            <li><a href="/login">Log in</a></li>
+            <li><a href="/signup" class="btn">Sign up</a></li>
+          <% } %>
+          
         <li><a href="/courses/create">New Course</a></li>
     </ul>
 </nav>
