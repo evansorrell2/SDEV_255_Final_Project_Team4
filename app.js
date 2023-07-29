@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Course = require('./models/course')
+const User = require("./models/User");
 const authRoutes = require('./routes/authRoutes.js');
 const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 
@@ -31,22 +32,20 @@ app.use(cookieParser());
 //UserInfo
 app.get('*', checkUser);
 
-// -----routes-----
+// ----------ROUTES----------
 
-//Auth
-
+//---Auth---
 app.use(authRoutes);
+
+
+
+//---Courses---
 
 // index
 app.get('/', (req, res) => {
     res.redirect('/courses');
     //res.render('index', { title: 'Home'});   
 });
-
-
-
-// course routes
-// courses
 app.get('/courses', (req, res) => {
     Course.find().sort({ createdAt: -1 })
         .then((result) => {
@@ -74,7 +73,7 @@ app.post('/courses',requireAuth, (req, res) => {
 app.get('/courses/create', requireAuth, (req, res) => {
     res.render('create', { title: 'Create Course' });
 });
-
+//individual course page
 app.get('/courses/:id', (req, res) => {
     const id = req.params.id;
     Course.findById(id)
@@ -98,7 +97,7 @@ app.delete('/courses/:id',requireAuth, (req, res) => {
             console.log(err);
         })
 })
-// Edit course
+// Edit course page
 app.get('/edit/:id',requireAuth, (req, res) => {
     const id = req.params.id;
     Course.findById(id)
@@ -109,32 +108,66 @@ app.get('/edit/:id',requireAuth, (req, res) => {
             console.log(err);
         });
 });
-app.post('/edit/:id',requireAuth, (req, res) => {
-    const course = new Course(req.body);
-    const id = req.params.id;
+//Edit course request
+app.put('/edit/:id',requireAuth, (req, res) => {
+    const courseId = req.params.id;
+    const updatedCourse = {
+        code: req.body.code,
+        title: req.body.title,
+        desc: req.body.desc
+    };
 
-    course.save()
-        .then((result) => {
-            Course.findByIdAndDelete(id)
-            .then(result => {
-                res.redirect('/courses');
-            })
-            .catch(err => {
-            console.log(err);
-            })
-
+    Course.findOneAndUpdate({ _id: courseId }, updatedCourse, { new: true })
+        .then(result => {
+            res.json({ redirect: '/courses' });
         })
-        .catch((err) => {
+        .catch(err => {
             console.log(err);
-        })
+        });
 })
 
-// app.put('/edit/:id', (req, res) => {
-//     res.send()
+//---Scheduler---
 
-// }
+//Schedule Page
+app.get('/schedule', (req, res) => {
+    Course.find({ _id: { $in: res.locals.user.schedule } })
+        .then(result => {
+            res.render('schedule', { courses: result, title: 'My Schedule'});
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: "Internal server error." });
+        });
+});
+//Schedule add class
+app.get('/schedule/add/:id', (req, res) => {
+    const id = req.params.id;
+    User.findOneAndUpdate({ _id: res.locals.user._id }, { $push: { schedule: id } }, { upsert: true })
+        .then(result => {
+            res.redirect('/schedule');
+        },
+        err => {
+            console.log(err);
+            res.status(500).json({ error: "Internal server error." });
+        }
+    );
+});
+//Schedule remove class
+app.get('/schedule/remove/:id', (req, res) => {
+    const id = req.params.id;
+    User.findOneAndUpdate({ _id: res.locals.user._id }, { $pull: { schedule: id } }, { upsert: true })
+        .then(result => {
+            res.redirect('/schedule');
+        },
+        err => {
+            console.log(err);            
+            res.status(500).json({ error: "Internal server error." });
+        }
+    );
+});
 
-// 404
+
+//---404---
 app.use((req, res) => {
     res.status(404).render('404', { title: '404' });
 });

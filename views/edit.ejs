@@ -14,7 +14,7 @@
                 <input type="text" id="title" name="title" value="<%= course.title %>"required>
                 <label for="desc">Course description:</label>
                 <textarea id="desc" name="desc" required><%= course.desc %></textarea>
-                <button>Submit</button>
+                <button id="updateButton" data-doc="<%= course._id %>">Update</button>
             </form>
                 <!--<button id="edit" data-doc="<%= course._id %>">Edit</button>-->
                 
@@ -24,27 +24,43 @@
 
         <%- include('./partials/footer.ejs') %>
 
-        <!-- <script>
+        <script>
 
-            const trashcan = document.querySelector('#edit');
+            document.addEventListener('DOMContentLoaded', () => {
+                const courseForm = document.querySelector('#myForm');
+                const updateButton = document.querySelector('#updateButton');
+                const courseId = '<%= course._id %>';
 
-            trashcan.addEventListener('click', (e) => {
+                updateButton.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent the default form submission
+                    
+                    const formData = new FormData(courseForm); // Get the form data
+
+                        // Create an object from the form data
+                        const courseData = {
+                        
+                        code: formData.get('code'),
+                        title: formData.get('title'),
+                        desc: formData.get('desc'),
+                        };
+
+                        // Send a PUT request to update the course
+                        fetch(`/edit/<%= course._id %>`, {
+                            method: 'PUT',
+                            headers: {
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(courseData)
+                        })
+                        .then(response => response.json())
+                        .then(data => window.location.href = data.redirect)
+                        .catch(err => console.log(err));
+                    });
+
+
                 
-                console.log("click");
-                const endpoint = `/courses/${trashcan.dataset.doc}`;
-
-                fetch(endpoint, {
-                    method: 'DELETE'
-                })
-                .then((response) => {
-                    response = response.json()
-                    document.getElementById("myform").submit();
-                })
-                .then((data) => window.location.href = data.redirect)
-                .catch(err => console.log(err));
-                //document.getElementById("myform").submit();
             })
-        </script> -->
+        </script>
 
     </body>
 </html>

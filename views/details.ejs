@@ -12,12 +12,22 @@
             <div class="content">
                 <p><%= course.desc %></p>
             </div>
+            <div class ="bottomButton">
+
+            
             <% if (user) { 
                 if (user.role == 'teacher') { %>
                 <a class="delete" data-doc="<%= course._id %>">Delete</a>
-            <% }}%>
+                <a class="edit" href="/edit/<%= course._id %>">Edit</a>
+                <%}else if(user.role == 'student'){
+                    if(user.schedule && user.schedule.indexOf(course._id) > -1) { %>              
+                        <a class="scheduleButton" href="/schedule/remove/<%= course._id %>">Remove From Schedule</a>
+                      <% } else {%>
+                        <a class="scheduleButton" href="/schedule/add/<%= course._id %>">Add To Scedule</a>
+                      <% }   
+             }}%>
+            </div>
             
-            <a class="edit" href="/edit/<%= course._id %>">Edit</a>
         </div>
 
         <%- include('./partials/footer.ejs') %>

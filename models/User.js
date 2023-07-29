@@ -16,7 +16,10 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: [true, 'no role recieved'],
-  }
+  },
+  schedule: {
+    type: [String],
+}
 });
 
 // fire a function before doc saved to db
