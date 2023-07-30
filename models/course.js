@@ -13,6 +13,10 @@ const courseSchema = new Schema({
     desc:{
         type: String,
         required: true
+    },
+    credits:{
+        type: Number,
+        required: true
     }
 }, { timestamps: true });
 

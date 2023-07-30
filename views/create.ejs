@@ -8,12 +8,14 @@
 
         <div class="create-course content">
             <form action="/courses" method="POST">
-                <label for="code">Course code:</label>
+                <label for="code">Course Code:</label>
                 <input type="text" id="code" name="code" required>
-                <label for="title">Course title:</label>
+                <label for="title">Course Title:</label>
                 <input type="text" id="title" name="title" required>
-                <label for="desc">Course description:</label>
+                <label for="desc">Course Description:</label>
                 <textarea id="desc" name="desc" required></textarea>
+                <label for="credits">Credits:</label>
+                <input type="number" id="credits" name="credits" required>
                 <button>Submit</button>
             </form>
         </div>

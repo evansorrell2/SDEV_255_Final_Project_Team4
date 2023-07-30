@@ -14,6 +14,8 @@
                 <input type="text" id="title" name="title" value="<%= course.title %>"required>
                 <label for="desc">Course description:</label>
                 <textarea id="desc" name="desc" required><%= course.desc %></textarea>
+                <label for="credits">Credits:</label>
+                <input type="number" id="credits" name="credits" value="<%= course.credits %>"required>
                 <button id="updateButton" data-doc="<%= course._id %>">Update</button>
             </form>
                 <!--<button id="edit" data-doc="<%= course._id %>">Edit</button>-->
